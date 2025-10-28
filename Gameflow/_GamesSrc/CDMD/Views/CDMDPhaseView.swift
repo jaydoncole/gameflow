@@ -10,24 +10,22 @@ import SwiftUI
 struct CDMDPhaseView: View {
     @Environment(AppData.self) private var appData: AppData
     
-    @State var currentAction: Int = 0
-    
     var body: some View {
         VStack {
             HorizontalPlayerOrderActiveView()
-            Text(appData.currentGame.gamePhases[appData.currentPhase].getDescription())
-            switch appData.currentGame.gamePhases[appData.currentPhase].phaseId {
+            Text(appData.GetCurrentPhase().getDescription())
+            switch appData.GetCurrentPhase().phaseId {
                 case "action":
                     PhaseTypeSelectableActionView(actionPhaseActions: 3)
                     .onAppear() {
-                        appData.showNextPhaseButton = true
+                        appData.ToggleNextPhaseButton()
                     }
                 case "mythos":
                     PhaseTypeConcurrentActionView()
                 case "inv-or-fight":
                     PhaseTypeConcurrentActionView()
                 case "end-of-turn":
-                    PhaseTypeSequentialActionView(currentAction: $currentAction)
+                    PhaseTypeSequentialActionView()
                 default:
                     Text("No Phase Selected!")
             }
@@ -49,6 +47,7 @@ struct CDMDPhaseView: View {
     func goToNextPhase() {
         if(appData.goToNextPhase == true) {
             appData.goToNextPhase = false
+            appData.currentAction = 0
             if appData.currentPhase + 1 == appData.currentGame.gamePhases.count {
                 appData.currentPhase = 0
                 let nextPlayer = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: appData.currentPlayer, selectedPlayers: appData.selectedPlayers)
@@ -66,19 +65,15 @@ struct CDMDPhaseView: View {
     func goToNextAction() {
         if(appData.goToNextAction == true) {
             appData.goToNextAction = false
-            currentAction += 1
-            if(currentAction + 1 == appData.currentGame.gamePhases.count) {
-                appData.showNextPhaseButton = true
-                appData.showNextActionButton = false
-                currentAction = 0
-            }
+            appData.currentAction += 1
         }
     }
     
     func playerEliminatedHandler() {
         appData.playerEliminated = false
         appData.currentPhase = 0
-        currentAction = 0
+        appData.currentAction = 0
+        appData.ToggleNextPhaseButton()
     }
 }
 

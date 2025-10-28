@@ -52,18 +52,14 @@ struct PlayerProfileList: View {
     var body: some View {
         VStack {
             ForEach(appData.currentGame.playerProfiles) { player in
-                HStack {
-                    PlayerIconOrColorView(player: player)
-                        .frame(width: 35)
-                    Text(player.characterName)
-                }
+                PlayerInformationRow(player: player, iconWidth: 35)
                 .onTapGesture {
                     selectedPlayer = player
                 }
                 .disabled(!PlayerHelperMethods.isProfileAvailable(profileId: player.profileId, selectedPlayers: appData.selectedPlayers))
                 .opacity(PlayerHelperMethods.isProfileAvailable(profileId: player.profileId, selectedPlayers: appData.selectedPlayers) ? 1.0 : 0.1)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(player.iconColor == selectedPlayer?.iconColor ? Color.white.opacity(0.1) : Color.white.opacity(0.0))
+                .background(player.iconColor == selectedPlayer?.iconColor ? Color.white.opacity(0.2) : Color.white.opacity(0.0))
             }
         }
     }

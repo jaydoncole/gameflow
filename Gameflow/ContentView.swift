@@ -28,12 +28,21 @@ struct ContentView: View {
             }
             .navigationDestination(for: Game.self, destination: { game in
                 PlayerSetupStageView()
+                    .navigationTitle(appData.navigationTitle)
+                    .navigationBarTitleDisplayMode(.inline)
             })
             .navigationDestination(for:String.self, destination: { viewId in
                 if viewId == "Settings" {
                     // Settings View
                 } else if viewId == "Phase View" {
                     PhaseStageView()
+                        .navigationTitle(appData.navigationTitle)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                GameOptionsMenu()
+                            }
+                        }
                 }
             })
         }

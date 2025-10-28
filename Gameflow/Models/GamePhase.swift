@@ -6,27 +6,16 @@
 //
 import Foundation
 
-class GamePhase: CustomStringConvertible {
+class GamePhase: CustomStringConvertible, Identifiable {
+    public let id = UUID()
     public let phaseId: String
     private var title: String
     private var details: String
     private var phaseIcon: String = ""
     private var phaseActions: [GamePhaseAction] = []
+    
     public var description: String {
         return title
-    }
-    
-    init(phaseId: String, title: String, details: String) {
-        self.phaseId = phaseId
-        self.title = title
-        self.details = details
-    }
-    
-    init(phaseId: String, title: String, details: String, phaseIcon: String) {
-        self.phaseId = phaseId
-        self.title = title
-        self.details = details
-        self.phaseIcon = phaseIcon
     }
     
     init(phaseId: String, title: String, details: String, phaseActions: [GamePhaseAction]) {
@@ -72,5 +61,4 @@ class GamePhase: CustomStringConvertible {
     public func getPhaseAction(index: Int) -> GamePhaseAction {
         return self.phaseActions[index]
     }
-    
 }

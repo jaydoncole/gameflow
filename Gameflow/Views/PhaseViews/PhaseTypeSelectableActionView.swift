@@ -15,20 +15,20 @@ struct PhaseTypeSelectableActionView: View {
 
     var body: some View {
         VStack() {
-            ForEach(appData.currentGame.gamePhases[appData.currentPhase].getPhaseActions()) { action in
+            ForEach(appData.GetCurrentPhase().getPhaseActions()) { action in
                 HStack {
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: action.getActionIcon()).foregroundStyle(appData.selectedPlayers[appData.currentPlayer].iconColor)
+                            Image(systemName: action.getActionIcon()).foregroundStyle(appData.GetCurrentPlayer().iconColor)
                             Text(action.getName()).font(.headline)
                             Spacer()
                             Button(action: {
                                 actionsTaken.append(action)
                             }, label: {
                                 Image(systemName: "square.and.arrow.down.badge.checkmark")
-                            }).foregroundStyle(appData.selectedPlayers[appData.currentPlayer].iconColor)
+                            }).foregroundStyle(appData.GetCurrentPlayer().iconColor)
                         }
-                        Text(action.getHelper()).font(.caption)
+                        BasicActionDisplayView()
                     }
                 }.padding()
             }.frame(width: 350)
@@ -42,7 +42,7 @@ struct PhaseTypeSelectableActionView: View {
                         }
                     }, label: {
                         Image(systemName: actionsTaken.indices.contains(index) ? actionsTaken[index].getActionIcon() : "square")
-                            .foregroundStyle(appData.selectedPlayers[appData.currentPlayer].iconColor)
+                            .foregroundStyle(appData.GetCurrentPlayer().iconColor)
                     })
                 }
             }

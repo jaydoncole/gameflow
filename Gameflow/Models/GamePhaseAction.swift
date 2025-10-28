@@ -7,19 +7,24 @@
 import Foundation
 
 class GamePhaseAction: Identifiable {
-    public let actionId = UUID()
+    public let id = UUID()
+    private var actionRef: String
     private var name: String
-    private var helper: String
+    private var basicActionElements: [BasicActionElement]
     private var actionIcon: String = ""
     
-    init(name: String, helper: String) {
+    
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement]) {
+        self.actionRef = actionRef
         self.name = name
-        self.helper = helper
+        self.basicActionElements = basicActionElements
     }
     
-    init(name: String, helper: String, actionIcon: String) {
+    
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], actionIcon: String) {
+        self.actionRef = actionRef
         self.name = name
-        self.helper = helper
+        self.basicActionElements = basicActionElements
         self.actionIcon = actionIcon
     }
     
@@ -31,12 +36,16 @@ class GamePhaseAction: Identifiable {
         return self.name
     }
     
-    public func getHelper() -> String {
-        return self.helper
-    }
-    
     public func getActionIcon() -> String {
         return self.actionIcon
+    }
+    
+    public func getActionRef() -> String {
+        return self.actionRef
+    }
+    
+    public func getBasicActionElements() -> [BasicActionElement] {
+        return self.basicActionElements
     }
 }
 

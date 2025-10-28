@@ -15,31 +15,29 @@ struct StandardPlayerSetupView: View {
     
     var body: some View {
         VStack {
-            NavigationView {
-                VStack {
-                    SelectedPlayerList()
+            VStack {
+                SelectedPlayerList()
+                Spacer()
+                Button(action: {
+                    appData.viewPath.append("Phase View")
+                }, label: {
+                    Text("Start Game")
+                })
+                .buttonStyle(.positiveButtonStyle)
+                .padding()
+                .opacity(appData.selectedPlayers.count < appData.currentGame.gameData.minPlayers ? 0.0 : 1.0)
+                HStack {
                     Spacer()
-                    Button(action: {
-                        print("Starting Game")
-                        appData.viewPath.append("Phase View")
-                    }, label: {
-                        Text("Start Game")
-                    })
-                    .buttonStyle(.positiveButtonStyle)
-                    .padding()
-                    .opacity(appData.selectedPlayers.count < appData.currentGame.gameData.minPlayers ? 0.0 : 1.0)
-                    HStack {
-                        Spacer()
-                        AddPlayerButton(
-                            presentNewPlayerWindow: $presentNewPlayerWindow,
-                            maxPlayers: appData.currentGame.gameData.maxPlayers,
-                            newPlayer: $newPlayer
-                        )
-                    }
+                    AddPlayerButton(
+                        presentNewPlayerWindow: $presentNewPlayerWindow,
+                        maxPlayers: appData.currentGame.gameData.maxPlayers,
+                        newPlayer: $newPlayer
+                    )
                 }
-                .navigationTitle("\(appData.currentGame.gameData.name) Player Setup")
-                .navigationBarTitleDisplayMode(.inline)
             }
+        }
+        .onAppear() {
+            appData.navigationTitle = "\(appData.currentGame.gameData.name) Player Setup"
         }
     }
 }
@@ -52,11 +50,9 @@ struct AddPlayerButton: View {
     
     var body: some View {
         Button (action: {
-            print("Presenting Player Creation")
             presentNewPlayerWindow = true
         }) {
-            Text("+")
-                .frame(width: 50, height: 50)
+            Image(systemName: "plus").frame(width: 30, height: 30)
         }
         .buttonStyle(.positiveButtonStyle)
         .padding()
@@ -78,15 +74,7 @@ struct SelectedPlayerList: View {
     var body: some View {
         List {
             ForEach(appData.selectedPlayers) { player in
-                HStack {
-                    PlayerIconOrColorView(player: player)
-                        .frame(width: 50)
-                    Text(player.playerName)
-                    if player.characterName != "" {
-                        Text(" : ")
-                        Text(player.characterName)
-                    }
-                }
+                PlayerInformationRow(player: player, iconWidth: 50)
             }
             .onDelete(perform: deleteRow)
         }

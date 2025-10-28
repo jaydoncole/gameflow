@@ -13,7 +13,7 @@ struct MageKnightPlayerSetupView: View {
     }
 }
 
-#Preview {
+#Preview (traits: .modifier(MageKnightGamePreviewTrait())){
     MageKnightPlayerSetupView()
         .environment(AppData())
 }

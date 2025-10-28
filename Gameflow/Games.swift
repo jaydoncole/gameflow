@@ -44,6 +44,8 @@ enum Games: CaseIterable {
         switch self {
         case .CDMDS1:
             return CDMDGamePhases().gamePhases
+        case .MageKnight:
+            return MageKnightGamePhases().gamePhases
         default:
             return UnsetGamePhases().gamePhases
         }
@@ -89,6 +91,8 @@ struct gamePhaseView: View {
         switch gameEnum {
         case .CDMDS1:
             CDMDPhaseView()
+        case .MageKnight:
+            MageKnightPhaseView()
         default:
             UnsetPhaseView()
         }

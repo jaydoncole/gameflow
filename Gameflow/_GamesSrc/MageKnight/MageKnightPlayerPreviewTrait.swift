@@ -13,9 +13,9 @@ struct MageKnightPlayerPreviewTrait: PreviewModifier {
         
         appData.currentGame = .MageKnight
         appData.selectedPlayers = [
-            PlayerProfile( profileId: "wolfhawk", characterName: "Wolfhawk", iconColor: .purple, iconImage: "MageKnightWolfhawkPlayer" ),
-            PlayerProfile( profileId: "arythea", characterName: "Arythea", iconColor: .red, iconImage: "MageKnightArytheaPlayer" ),
-            PlayerProfile( profileId: "norowas", characterName: "Norowa", iconColor: .cyan, iconImage: "MageKnightNorowasPlayer" )
+            PlayerProfile( profileId: "wolfhawk", characterName: "Wolfhawk", playerName: "Player 1", iconColor: .purple, iconImage: "MageKnightWolfhawkPlayer" ),
+            PlayerProfile( profileId: "arythea", characterName: "Arythea", playerName: "Player 2", iconColor: .red, iconImage: "MageKnightArytheaPlayer" ),
+            PlayerProfile( profileId: "norowas", characterName: "Norowa", playerName: "Player 3", iconColor: .cyan, iconImage: "MageKnightNorowasPlayer" )
         ]
         
         return appData

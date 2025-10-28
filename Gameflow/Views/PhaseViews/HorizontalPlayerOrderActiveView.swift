@@ -14,18 +14,18 @@ struct HorizontalPlayerOrderActiveView: View {
         HStack {
             ForEach(appData.selectedPlayers) { player in
                 PlayerIconOrColorView(player: player)
-                    .frame(width: (player == appData.selectedPlayers[appData.currentPlayer] ? 50 : 30))
+                    .frame(width: (player == appData.GetCurrentPlayer() ? 50 : 30))
             }
             .padding()
         }
         HStack {
-            Text(appData.selectedPlayers[appData.currentPlayer].playerName)
-            if appData.selectedPlayers[appData.currentPlayer].characterName != "" {
+            Text(appData.GetCurrentPlayer().playerName)
+            if appData.GetCurrentPlayer().characterName != "" {
                 Text(" : ")
-                Text(appData.selectedPlayers[appData.currentPlayer].characterName)
+                Text(appData.GetCurrentPlayer().characterName)
             }
         }
-        .foregroundStyle(appData.selectedPlayers[appData.currentPlayer].iconColor).font(.title)
+        .foregroundStyle(appData.GetCurrentPlayer().iconColor).font(.title3)
     }
 }
 

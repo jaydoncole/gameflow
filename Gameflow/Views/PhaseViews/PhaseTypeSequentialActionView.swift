@@ -9,23 +9,28 @@ import SwiftUI
 
 struct PhaseTypeSequentialActionView: View {
     @Environment(AppData.self) private var appData: AppData
+    @State private var currentActionElements: [BasicActionElement] = []
     
-    @Binding var currentAction: Int
     var body: some View {
         VStack() {
-            Text(appData.currentGame.gamePhases[appData.currentPhase].getPhaseAction(index: currentAction).getName())
+            Text(appData.GetCurrentAction().getName())
                 .font(.headline)
-            Text(appData.currentGame.gamePhases[appData.currentPhase].getPhaseAction(index: currentAction).getHelper())
+            BasicActionDisplayView()
         }.onAppear() {
-            appData.showNextPhaseButton = false
-            appData.showNextActionButton = true
+            determinePhaseActionButtons()
+        }
+        .onChange(of: appData.goToNextAction) {
+            determinePhaseActionButtons()
         }
         .padding()
+    }
+    
+    
+    func determinePhaseActionButtons() {
+        appData.DetermineNextPhaseActionButton()
     }
 }
 
 #Preview (traits: .modifier(CDMDPlayerPreviewTrait())){
-    @Previewable @State var currentAction = 0
-
-    PhaseTypeSequentialActionView(currentAction: $currentAction)
+    PhaseTypeSequentialActionView()
 }
