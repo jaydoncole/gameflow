@@ -18,6 +18,8 @@ struct UnsetGamePhases {
                     basicActionElements: [
                         BasicActionElement(elementType: .Paragraph, content: "This is a sample action.")
                     ],
+                    nextScreenType: .EndGame,
+                    nextScreenId: "",
                     actionIcon: "figure.run"
                 ),
             ]

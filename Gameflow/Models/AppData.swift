@@ -44,13 +44,12 @@ import SwiftUI
     var navigationTitle: String = ""
     
     /* Phases Navigation states */
-    var showNextPhaseButton: Bool = false
-    var showNextActionButton: Bool = false
+    var showProgressionButtons: Bool = true
     var goToNextAction: Bool = false
     var goToNextPhase: Bool = false
     var goToNextPlayer: Bool = false
     var playerEliminated: Bool = false
-    var customActionButtonListener: String = "" // If we have "branching actions" buttons, this will allow us to listen for those clicks to be handled in the PhaseView
+    var customActionButtonListener: String = "" // If we have "branching actions" buttons (multiple buttons in an Actionview that will go into separate flows), this will allow us to listen for those clicks to be handled in the PhaseView
 
     public func ResetGameState() {
         currentGame = .Unset
@@ -60,26 +59,6 @@ import SwiftUI
         currentPhase = 0
         currentAction = 0
         resetGame = false
-    }
-    
-    public func ToggleNextActionButton() {
-        showNextActionButton = true
-        showNextPhaseButton = false
-    }
-    
-    public func ToggleNextPhaseButton() {
-        showNextActionButton = false
-        showNextPhaseButton = true
-    }
-    
-    public func DetermineNextPhaseActionButton() {
-        let onLastAction = currentGame.gamePhases[currentPhase].getPhaseActions().count == currentAction + 1
-        onLastAction ? ToggleNextPhaseButton() : ToggleNextActionButton()
-    }
-    
-    public func HideProgressionButtons() {
-        showNextActionButton = false
-        showNextPhaseButton = false
     }
     
     public func GetCurrentPhase() -> GamePhase {
@@ -92,5 +71,71 @@ import SwiftUI
     
     public func GetCurrentAction() -> GamePhaseAction {
         return currentGame.gamePhases[currentPhase].getPhaseAction(index: currentAction)
+    }
+    
+    public func GoToPhaseAction(phaseId: String, actionId: String) {
+        var phaseCounter = 0
+        var actionCounter = 0
+        outerLoop: for gamePhase in currentGame.gamePhases {
+            if(gamePhase.phaseId == phaseId) {
+                for phaseAction in gamePhase.getPhaseActions() {
+                    if(phaseAction.getActionRef() == actionId) {
+                        currentPhase = phaseCounter
+                        currentAction = actionCounter
+                        print("currentPhase: \(currentPhase), currentAction: \(currentAction)")
+                        break outerLoop
+                    }
+                    actionCounter += 1
+                }
+            }
+            phaseCounter += 1
+        }
+    }
+    
+    public func GoToPhaseAction(phaseId: String) {
+        var phaseCounter = 0
+        for gamePhase in currentGame.gamePhases {
+            if(gamePhase.phaseId == phaseId) {
+                currentPhase = phaseCounter
+                currentAction = 0
+                break;
+            }
+            phaseCounter += 1
+        }
+    }
+    
+    public func GoToPhaseAction(actionId: String) {
+        var actionCounter = 0
+        for phaseAction in GetCurrentPhase().getPhaseActions() {
+            if(phaseAction.getActionRef() == actionId) {
+                currentAction = actionCounter
+                break;
+            }
+            actionCounter += 1
+        }
+    }
+    
+    public func GoToNextScreen() {
+        switch GetCurrentAction().getNextScreenType() {
+            case .NextAction:
+                GoToPhaseAction(actionId: GetCurrentAction().getNextScreenId())
+            case .NextPhase:
+                GoToPhaseAction(phaseId: GetCurrentAction().getNextScreenId())
+            case .NextPlayer:
+                GoToPhaseAction(phaseId: GetCurrentAction().getNextScreenId())
+                SetNextPlayer()
+            default:
+                print ("Invalid Screen Type")
+        }
+    }
+    
+    
+    public func SetNextPlayer() {
+        let nextPlayer = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: currentPlayer, selectedPlayers: selectedPlayers)
+        if nextPlayer == -1 {
+            showAllPlayersDead = true
+        } else {
+            currentPlayer = nextPlayer
+        }
     }
 }

@@ -16,18 +16,7 @@ struct PhaseTypeSequentialActionView: View {
             Text(appData.GetCurrentAction().getName())
                 .font(.headline)
             BasicActionDisplayView()
-        }.onAppear() {
-            determinePhaseActionButtons()
         }
-        .onChange(of: appData.goToNextAction) {
-            determinePhaseActionButtons()
-        }
-        .padding()
-    }
-    
-    
-    func determinePhaseActionButtons() {
-        appData.DetermineNextPhaseActionButton()
     }
 }
 

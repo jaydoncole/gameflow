@@ -12,20 +12,29 @@ class GamePhaseAction: Identifiable {
     private var name: String
     private var basicActionElements: [BasicActionElement]
     private var actionIcon: String = ""
+    private var nextScreenType: NextScreenTypes = .NextAction
+    private var nextScreenId: String = ""
+    private var displayInScrollView: Bool = false
     
     
-    init(actionRef: String, name: String, basicActionElements: [BasicActionElement]) {
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, displayInScrollView: Bool = false) {
         self.actionRef = actionRef
         self.name = name
         self.basicActionElements = basicActionElements
+        self.nextScreenType = nextScreenType
+        self.nextScreenId = nextScreenId
+        self.displayInScrollView = displayInScrollView
     }
     
     
-    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], actionIcon: String) {
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, actionIcon: String, displayInScrollView: Bool = false) {
         self.actionRef = actionRef
         self.name = name
         self.basicActionElements = basicActionElements
+        self.nextScreenType = nextScreenType
+        self.nextScreenId = nextScreenId
         self.actionIcon = actionIcon
+        self.displayInScrollView = false
     }
     
     public func setActionIcon(actionIcon: String) {
@@ -46,6 +55,23 @@ class GamePhaseAction: Identifiable {
     
     public func getBasicActionElements() -> [BasicActionElement] {
         return self.basicActionElements
+    }
+    
+    public func getNextScreenType() -> NextScreenTypes {
+        return nextScreenType
+    }
+    
+    
+    public func setNextScreenId(screenId: String) {
+        self.nextScreenId = screenId
+    }
+    
+    public func getNextScreenId() -> String {
+        return nextScreenId
+    }
+    
+    public func getDisplayInScrollView() -> Bool {
+        return displayInScrollView
     }
 }
 

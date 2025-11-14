@@ -10,9 +10,14 @@ import SwiftUI
 struct SetPlayerOrderView: View {
     @Environment(AppData.self) private var appData: AppData
     @State var editMode = EditMode.active
+    // OPtional text if there's additional information for the Phase where player order is selected
+    @State var helperText: String = ""
     
     var body: some View {
         VStack {
+            if helperText != "" {
+                Text(helperText)
+            }
             Text("Set Player Order")
             List {
                 ForEach(appData.selectedPlayers) { player in
@@ -22,6 +27,9 @@ struct SetPlayerOrderView: View {
                     appData.selectedPlayers.move(fromOffsets: from, toOffset: to)
                 }
             }
+        }
+        .onAppear() {
+            appData.currentPlayer = 0
         }
         .environment(\.editMode, $editMode)
     }

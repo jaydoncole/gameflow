@@ -19,19 +19,38 @@ struct PhaseStageView: View {
                 }, label: {
                     Text("Next Action")
                 })
-                .opacity(appData.showNextActionButton ? 1.0 : 0.0)
-                .disabled(!appData.showNextActionButton)
+                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextAction && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextAction) || !appData.showProgressionButtons)
                 
                 Button(action: {
                     appData.goToNextPhase = true
                 }, label: {
                     Text("Next Phase")
                 })
-                .opacity(appData.showNextPhaseButton ? 1.0 : 0.0)
-                .disabled(!appData.showNextPhaseButton)
+                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextPhase && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextPhase) || !appData.showProgressionButtons)
+                
+                Button(action: {
+                    appData.goToNextPlayer = true
+                }, label: {
+                    Text("Next Player")
+                })
+                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextPlayer && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextPlayer) || !appData.showProgressionButtons)
+                
+                Button(action: {
+                    appData.showGameOverDialog = true
+                }, label: {
+                    Text("End Game")
+                })
+                .opacity(appData.GetCurrentAction().getNextScreenType() == .EndGame && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .EndGame) || !appData.showProgressionButtons)
             }
         }
         .onAppear() {
+            appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().getTitle())"
+        }
+        .onChange(of: appData.currentPhase) {
             appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().getTitle())"
         }
     }
@@ -58,6 +77,7 @@ struct GameOptionsMenu: View {
     }
 }
 
-#Preview (traits: .modifier(CDMDPlayerPreviewTrait())){
+#Preview (traits: .modifier(MageKnightPlayerPreviewTrait())){
+//#Preview (traits: .modifier(CDMDPlayerPreviewTrait())){
     PhaseStageView()
 }

@@ -17,9 +17,6 @@ struct CDMDPhaseView: View {
             switch appData.GetCurrentPhase().phaseId {
                 case "action":
                     PhaseTypeSelectableActionView(actionPhaseActions: 3)
-                    .onAppear() {
-                        appData.ToggleNextPhaseButton()
-                    }
                 case "mythos":
                     PhaseTypeConcurrentActionView()
                 case "inv-or-fight":
@@ -33,48 +30,35 @@ struct CDMDPhaseView: View {
         }
         .padding()
         .onChange(of: appData.goToNextPhase) {
-            goToNextPhase()
+            if(appData.goToNextPhase == true) {
+                appData.goToNextPhase = false
+                appData.GoToNextScreen()
+            }
         }
         .onChange(of: appData.goToNextAction) {
-            goToNextAction()
+            if(appData.goToNextAction == true) {
+                appData.goToNextAction = false
+                appData.GoToNextScreen()
+            }
+        }
+        .onChange(of: appData.goToNextPlayer) {
+            if(appData.goToNextPlayer == true) {
+                appData.goToNextPlayer = false
+                appData.GoToNextScreen()
+            }
         }
         .onChange(of: appData.playerEliminated) {
             playerEliminatedHandler()
         }
-    }
-    
-    
-    func goToNextPhase() {
-        if(appData.goToNextPhase == true) {
-            appData.goToNextPhase = false
-            appData.currentAction = 0
-            if appData.currentPhase + 1 == appData.currentGame.gamePhases.count {
-                appData.currentPhase = 0
-                let nextPlayer = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: appData.currentPlayer, selectedPlayers: appData.selectedPlayers)
-                if nextPlayer == -1 {
-                    appData.showAllPlayersDead = true
-                } else {
-                    appData.currentPlayer = nextPlayer
-                }
-            } else {
-                appData.currentPhase += 1
-            }
-        }
-    }
-    
-    func goToNextAction() {
-        if(appData.goToNextAction == true) {
-            appData.goToNextAction = false
-            appData.currentAction += 1
-        }
+        
     }
     
     func playerEliminatedHandler() {
         appData.playerEliminated = false
         appData.currentPhase = 0
         appData.currentAction = 0
-        appData.ToggleNextPhaseButton()
     }
+    
 }
 
 

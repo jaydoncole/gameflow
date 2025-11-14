@@ -27,11 +27,15 @@ struct BasicActionDisplayView: View {
                 case .Paragraph:
                     VStack{
                         Text(actionElement.content)
-                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
                 case .BulletPoint:
                     VStack {
                         BasicActionBulletPoint(content: actionElement.content)
-                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
                 case .CustomButton:
                     Button(action: {
                         appData.customActionButtonListener = actionElement.customButtonListener
@@ -59,7 +63,6 @@ struct BasicActionDisplayView: View {
                 if phaseAction.getActionRef() == actionRef {
                     allActionElements = phaseAction.getBasicActionElements()
                 }
-
             }
         } else {
             allActionElements = appData.GetCurrentAction().getBasicActionElements()

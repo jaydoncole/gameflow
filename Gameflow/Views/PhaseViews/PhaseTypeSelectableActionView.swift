@@ -28,7 +28,7 @@ struct PhaseTypeSelectableActionView: View {
                                 Image(systemName: "square.and.arrow.down.badge.checkmark")
                             }).foregroundStyle(appData.GetCurrentPlayer().iconColor)
                         }
-                        BasicActionDisplayView()
+                        BasicActionDisplayView(actionRef: action.getActionRef())
                     }
                 }.padding()
             }.frame(width: 350)

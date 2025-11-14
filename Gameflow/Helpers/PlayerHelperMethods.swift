@@ -62,4 +62,9 @@ class PlayerHelperMethods {
         }
         return nextPlayer
     }
+    
+    
+    static func checkIsLastPlayer(currentPlayerIndex: Int, selectedPlayers: [PlayerProfile]) -> Bool {
+        return (currentPlayerIndex + 1 == selectedPlayers.count)
+    }
 }
