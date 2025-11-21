@@ -50,6 +50,13 @@ import SwiftUI
     var goToNextPlayer: Bool = false
     var playerEliminated: Bool = false
     var customActionButtonListener: String = "" // If we have "branching actions" buttons (multiple buttons in an Actionview that will go into separate flows), this will allow us to listen for those clicks to be handled in the PhaseView
+    
+    /* In some cases we may have variables in instrcructions, we'll keep an array values to search for in strings, and the replacement */
+    var valueReplacements: [ValueReplacement] = []
+    
+    // TODO: There may be optional rules or expansions that modify the game's flow, we'll store any selected options/expansions here
+    var optionalRulels: [String] = []
+    
 
     public func ResetGameState() {
         currentGame = .Unset
@@ -58,6 +65,7 @@ import SwiftUI
         gamePhases = []
         currentPhase = 0
         currentAction = 0
+        valueReplacements = []
         resetGame = false
     }
     

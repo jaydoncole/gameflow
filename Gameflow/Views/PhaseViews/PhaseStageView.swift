@@ -77,7 +77,7 @@ struct GameOptionsMenu: View {
     }
 }
 
-#Preview (traits: .modifier(MageKnightPlayerPreviewTrait())){
+#Preview (traits: .modifier(AH2EPlayerPreviewTrait())){
 //#Preview (traits: .modifier(CDMDPlayerPreviewTrait())){
     PhaseStageView()
 }

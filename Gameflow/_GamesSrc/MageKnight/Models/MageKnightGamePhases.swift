@@ -4,7 +4,6 @@
 //
 //  Created by Jaydon Cole on 10/12/25.
 //
-
 struct MageKnightGamePhases {
     
     var gamePhases: [GamePhase] = []

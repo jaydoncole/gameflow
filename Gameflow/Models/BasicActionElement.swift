@@ -5,6 +5,7 @@
 //  Created by Jaydon Cole on 10/25/25.
 //
 import Foundation
+import SwiftUI
 
 struct BasicActionElement: Identifiable {
     let id = UUID()

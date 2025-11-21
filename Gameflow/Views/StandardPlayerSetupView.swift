@@ -85,6 +85,6 @@ struct SelectedPlayerList: View {
     }
 }
 
-#Preview (traits: .modifier(MageKnightGamePreviewTrait())){
+#Preview (traits: .modifier(AH2EGamePreviewTrait())){
     StandardPlayerSetupView()
 }

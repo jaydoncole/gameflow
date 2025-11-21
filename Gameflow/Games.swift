@@ -15,10 +15,10 @@ enum Games: CaseIterable {
     
     var gameData: Game {
         switch self {
+        case .ArkhamHorror2ed:
+            return AH2EGameData().game
         case .CDMDS1:
             return CDMDGameData().game
-        case .ArkhamHorror2ed:
-            return ArkhamHorror2edGameData().game
         case .MageKnight:
             return MageKnightGameData().game
         case .Unset:
@@ -29,6 +29,8 @@ enum Games: CaseIterable {
     
     var playerProfiles: [PlayerProfile] {
         switch self {
+        case .ArkhamHorror2ed:
+            return AH2EPlayerProfiles().availablePlayers
         case .CDMDS1:
             return CDMDPlayerProfiles().availablePlayers
         case .MageKnight:
@@ -42,6 +44,8 @@ enum Games: CaseIterable {
     
     var gamePhases: [GamePhase] {
         switch self {
+        case .ArkhamHorror2ed:
+            return AH2EGamePhases().gamePhases
         case .CDMDS1:
             return CDMDGamePhases().gamePhases
         case .MageKnight:
@@ -57,6 +61,8 @@ struct createPlayerSetupView: View {
     @State var gameEnum: Games
     var body: some View {
         switch gameEnum {
+            case .ArkhamHorror2ed:
+                AH2EPlayerSetupView()
             case .CDMDS1:
                 CDMDPlayerSetupView()
             case .MageKnight:
@@ -74,6 +80,8 @@ struct createNewPlayerView: View {
     
     var body: some View {
         switch gameEnum {
+        case .ArkhamHorror2ed:
+            AH2ECreateNewPlayerView(newPlayer: $newPlayer, isPresented: $isPresented)
         case .CDMDS1:
             CDMDCreateNewPlayerView(newPlayer: $newPlayer, isPresented: $isPresented)
         case .MageKnight:
@@ -89,6 +97,8 @@ struct gamePhaseView: View {
     @State var gameEnum: Games
     var body: some View {
         switch gameEnum {
+        case .ArkhamHorror2ed:
+            AH2EPhaseView()
         case .CDMDS1:
             CDMDPhaseView()
         case .MageKnight:

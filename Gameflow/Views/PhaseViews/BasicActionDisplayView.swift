@@ -17,22 +17,23 @@ struct BasicActionDisplayView: View {
     var body: some View {
         VStack() {
             ForEach(basicActionElements) { actionElement in
+                let contentString = RenderContent(actionElement: actionElement)
                 switch actionElement.elementType {
                 case .Header:
-                    Text(actionElement.content).font(.title).padding()
+                    Text(contentString).font(.title).padding()
                 case .Header2:
-                    Text(actionElement.content).font(.title2).padding()
+                    Text(contentString).font(.title2).padding()
                 case .Header3:
-                    Text(actionElement.content).font(.title3).padding()
+                    Text(contentString).font(.title3).padding()
                 case .Paragraph:
                     VStack{
-                        Text(actionElement.content)
+                        Text(contentString)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
                 case .BulletPoint:
                     VStack {
-                        BasicActionBulletPoint(content: actionElement.content)
+                        BasicActionBulletPoint(content: contentString)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
@@ -40,7 +41,7 @@ struct BasicActionDisplayView: View {
                     Button(action: {
                         appData.customActionButtonListener = actionElement.customButtonListener
                     }, label: {
-                        Text(actionElement.content)
+                        Text(contentString)
                     })
                     .padding()
                 default:
@@ -55,6 +56,16 @@ struct BasicActionDisplayView: View {
             RefreshActionElements()
         }
     }
+    
+    
+    private func RenderContent(actionElement: BasicActionElement) -> LocalizedStringKey {
+        var content = actionElement.content
+        for replaceRule in appData.valueReplacements {
+            content = content.replacingOccurrences(of: replaceRule.needle, with: replaceRule.value)
+        }
+        return LocalizedStringKey(content)
+    }
+    
     
     private func RefreshActionElements() {
         var allActionElements: [BasicActionElement] = []
@@ -78,7 +89,7 @@ struct BasicActionDisplayView: View {
 
 
 struct BasicActionBulletPoint: View {
-    @State var content: String
+    @State var content: LocalizedStringKey
     var body: some View {
         HStack(alignment: .top) {
             Text("•")

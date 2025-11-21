@@ -4,7 +4,6 @@
 //
 //  Created by Jaydon Cole on 10/4/25.
 //
-
 struct CDMDGamePhases {
     var gamePhases: [GamePhase] = []
     

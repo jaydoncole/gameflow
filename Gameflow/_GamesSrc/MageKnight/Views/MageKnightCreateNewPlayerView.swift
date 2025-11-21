@@ -22,7 +22,7 @@ struct MageKnightCreateNewPlayerView: View {
                 Text("Player Name: ")
                 TextField("Player Name", text: $enteredName)
                 Text("Character: ")
-                PlayerProfileList(selectedPlayer: $selectedPlayer)
+                MageKnightPlayerProfileList(selectedPlayer: $selectedPlayer)
                 Button(action: {
                     if(selectedPlayer != nil) {
                         selectedPlayer!.playerName = enteredName
@@ -44,7 +44,7 @@ struct MageKnightCreateNewPlayerView: View {
     }
 }
 
-struct PlayerProfileList: View {
+struct MageKnightPlayerProfileList: View {
     @Environment(AppData.self) private var appData: AppData
     
     @Binding var selectedPlayer : PlayerProfile?
