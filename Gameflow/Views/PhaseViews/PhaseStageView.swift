@@ -9,6 +9,9 @@ import SwiftUI
 
 struct PhaseStageView: View {
     @Environment(AppData.self) private var appData
+    
+    @State var displayHelperSheet: Bool = false
+    
     var body: some View {
         VStack {
             // Defined in Games file
@@ -52,6 +55,12 @@ struct PhaseStageView: View {
         }
         .onChange(of: appData.currentPhase) {
             appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().getTitle())"
+        }
+        .onChange(of: appData.displayHelperSheet) {
+            self.displayHelperSheet = appData.displayHelperSheet
+        }
+        .sheet(isPresented: $displayHelperSheet) {
+            // TODO: Figure out how to get Helper Sheets working
         }
     }
 }

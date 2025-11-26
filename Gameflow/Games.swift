@@ -114,6 +114,8 @@ struct customPhaseMenuOptions: View {
     @State var gameEnum: Games
     var body: some View {
         switch gameEnum {
+            case .ArkhamHorror2ed:
+                AH2EPhaseMenuOptions()
             case .CDMDS1:
                 CDMDPhasesMenuOptions()
             default:

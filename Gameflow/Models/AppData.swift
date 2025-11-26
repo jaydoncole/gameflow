@@ -54,8 +54,15 @@ import SwiftUI
     /* In some cases we may have variables in instrcructions, we'll keep an array values to search for in strings, and the replacement */
     var valueReplacements: [ValueReplacement] = []
     
+    // In some cases we need to override what screen will be displayed next, this will store the string of the next screen reference id
+    var nextScreenOverride: String = ""
+    
     // TODO: There may be optional rules or expansions that modify the game's flow, we'll store any selected options/expansions here
     var optionalRulels: [String] = []
+    
+    // Some phases or menu options can provide heloper sheet for rule references, this stores the data to be displayed if it is opened
+    var helperSheetContent: [BasicActionElement] = []
+    var displayHelperSheet: Bool = false
     
 
     public func ResetGameState() {
@@ -124,13 +131,20 @@ import SwiftUI
     }
     
     public func GoToNextScreen() {
+        var nextScreenId = ""
+        if nextScreenOverride.count > 0 {
+            nextScreenId = nextScreenOverride
+            nextScreenOverride = ""
+        } else {
+            nextScreenId = GetCurrentAction().getNextScreenId()
+        }
         switch GetCurrentAction().getNextScreenType() {
             case .NextAction:
-                GoToPhaseAction(actionId: GetCurrentAction().getNextScreenId())
+                GoToPhaseAction(actionId: nextScreenId)
             case .NextPhase:
-                GoToPhaseAction(phaseId: GetCurrentAction().getNextScreenId())
+                GoToPhaseAction(phaseId: nextScreenId)
             case .NextPlayer:
-                GoToPhaseAction(phaseId: GetCurrentAction().getNextScreenId())
+                GoToPhaseAction(phaseId: nextScreenId)
                 SetNextPlayer()
             default:
                 print ("Invalid Screen Type")

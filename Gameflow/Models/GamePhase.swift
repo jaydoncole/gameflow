@@ -61,4 +61,14 @@ class GamePhase: CustomStringConvertible, Identifiable {
     public func getPhaseAction(index: Int) -> GamePhaseAction {
         return self.phaseActions[index]
     }
+    
+    public func getPhaseActionByActionRef(actionRef: String) -> GamePhaseAction {
+        for action in phaseActions {
+            if actionRef == action.getActionRef() {
+                return action
+            }
+        }
+        // Shouldn't get here, but just in case... 
+        return self.phaseActions[0]
+    }
 }
