@@ -13,7 +13,7 @@ struct CDMDPhaseView: View {
     var body: some View {
         VStack {
             HorizontalPlayerOrderActiveView()
-            Text(appData.GetCurrentPhase().getDescription())
+            Text(appData.GetCurrentPhase().description)
             switch appData.GetCurrentPhase().phaseId {
                 case "action":
                     PhaseTypeSelectableActionView(actionPhaseActions: 3)

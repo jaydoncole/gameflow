@@ -13,9 +13,9 @@ struct PhaseTypeConcurrentActionView: View {
    // @State var currentGamePhase: GamePhase
     var body: some View {
         VStack {
-            ForEach(appData.GetCurrentPhase().getPhaseActions()) { action in
+            ForEach(appData.GetCurrentPhase().phaseActions) { action in
                 VStack(alignment: .leading) {
-                    Text(action.getName()).font(.headline)
+                    Text(action.name).font(.headline)
                     BasicActionDisplayView()
                 }.padding()
             }.padding()

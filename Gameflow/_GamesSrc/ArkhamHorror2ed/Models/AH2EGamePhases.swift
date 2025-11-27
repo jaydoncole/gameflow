@@ -282,6 +282,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "movement_phase",
+                lastPlayerNextScreenId: "arkham_encounters_phase",
                 actionIcon: ""
             ),
             GamePhaseAction(
@@ -293,6 +294,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "movement_phase",
+                lastPlayerNextScreenId: "arkham_encounters_phase",
                 actionIcon: ""
             )
             
@@ -309,7 +311,8 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "movement_phase",
-                actionIcon: ""
+                lastPlayerNextScreenId: "arkham_encounters_phase",
+                actionIcon: "",
             )
         ]
     }
@@ -323,6 +326,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "movement_phase",
+                lastPlayerNextScreenId: "arkham_encounters_phase",
                 actionIcon: ""
             )
         ]
@@ -344,6 +348,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "arkham_enounters_phase",
+                lastPlayerNextScreenId: "other_world_encounters_phase",
                 actionIcon: ""
             ),
             GamePhaseAction(
@@ -355,6 +360,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "arkham_encounters_phase",
+                lastPlayerNextScreenId: "other_world_encounters_phase",
                 actionIcon: ""
             ),
             GamePhaseAction(
@@ -369,6 +375,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "arkham_encounters_phase",
+                lastPlayerNextScreenId: "other_world_encounters_phase",
                 actionIcon: ""
             )
         ]
@@ -388,6 +395,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "other_worlds_encounters_phase",
+                lastPlayerNextScreenId: "mythos_phase",
                 actionIcon: ""
             )
         ]
@@ -460,6 +468,7 @@ struct AH2EGamePhases {
                 ],
                 nextScreenType: .NextPlayer,
                 nextScreenId: "movement_phase",
+                lastPlayerNextScreenId: "arkham_encounters_phase",
                 actionIcon: ""
             )
         ]

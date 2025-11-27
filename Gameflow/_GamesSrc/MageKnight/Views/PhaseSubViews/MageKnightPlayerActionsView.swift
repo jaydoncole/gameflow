@@ -20,7 +20,7 @@ struct MageKnightPlayerActionsView: View {
         VStack {
             HorizontalPlayerOrderActiveView()
             if gamePhaseActions.indices.contains(appData.currentAction) {
-                switch(gamePhaseActions[appData.currentAction].getActionRef()) {
+                switch(gamePhaseActions[appData.currentAction].actionRef) {
                 case "pre_turn_check":
                     MageKnightPreTurnCheck(endOfRoundAnnounced: $endOfRoundAnnounced)
                 case "turn_type_selector":
@@ -41,7 +41,7 @@ struct MageKnightPlayerActionsView: View {
             }
         }
         .onAppear() {
-            gamePhaseActions = appData.GetCurrentPhase().getPhaseActions()
+            gamePhaseActions = appData.GetCurrentPhase().phaseActions
         }
     }
 }

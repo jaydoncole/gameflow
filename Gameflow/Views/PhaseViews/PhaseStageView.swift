@@ -22,39 +22,39 @@ struct PhaseStageView: View {
                 }, label: {
                     Text("Next Action")
                 })
-                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextAction && appData.showProgressionButtons ? 1.0 : 0.0)
-                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextAction) || !appData.showProgressionButtons)
+                .opacity(appData.GetCurrentAction().nextScreenType == .NextAction && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().nextScreenType == .NextAction) || !appData.showProgressionButtons)
                 
                 Button(action: {
                     appData.goToNextPhase = true
                 }, label: {
                     Text("Next Phase")
                 })
-                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextPhase && appData.showProgressionButtons ? 1.0 : 0.0)
-                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextPhase) || !appData.showProgressionButtons)
+                .opacity(appData.GetCurrentAction().nextScreenType == .NextPhase && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().nextScreenType == .NextPhase) || !appData.showProgressionButtons)
                 
                 Button(action: {
                     appData.goToNextPlayer = true
                 }, label: {
                     Text("Next Player")
                 })
-                .opacity(appData.GetCurrentAction().getNextScreenType() == .NextPlayer && appData.showProgressionButtons ? 1.0 : 0.0)
-                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .NextPlayer) || !appData.showProgressionButtons)
+                .opacity(appData.GetCurrentAction().nextScreenType == .NextPlayer && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().nextScreenType == .NextPlayer) || !appData.showProgressionButtons)
                 
                 Button(action: {
                     appData.showGameOverDialog = true
                 }, label: {
                     Text("End Game")
                 })
-                .opacity(appData.GetCurrentAction().getNextScreenType() == .EndGame && appData.showProgressionButtons ? 1.0 : 0.0)
-                .disabled(!(appData.GetCurrentAction().getNextScreenType() == .EndGame) || !appData.showProgressionButtons)
+                .opacity(appData.GetCurrentAction().nextScreenType == .EndGame && appData.showProgressionButtons ? 1.0 : 0.0)
+                .disabled(!(appData.GetCurrentAction().nextScreenType == .EndGame) || !appData.showProgressionButtons)
             }
         }
         .onAppear() {
-            appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().getTitle())"
+            appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().title)"
         }
         .onChange(of: appData.currentPhase) {
-            appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().getTitle())"
+            appData.navigationTitle = "Phase: \(appData.GetCurrentPhase().title)"
         }
         .onChange(of: appData.displayHelperSheet) {
             self.displayHelperSheet = appData.displayHelperSheet

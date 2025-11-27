@@ -10,8 +10,10 @@ import SwiftUI
 struct AH2EPhaseView: View {
     @Environment(AppData.self) private var appData: AppData
     @State var firstTurn:Bool = true
+    
     // If we have a monster battle, we want to go back to the phase we were at afterwards
-    @State var currentPhase: Int = -1
+    @State var recallPhase: Int?
+    
     @State var playersLostInTimeAndSpacePhaseOne: [String] = []
     @State var playersLostInTimeAndSpacePhaseTwo: [String] = []
 
@@ -20,12 +22,12 @@ struct AH2EPhaseView: View {
             if ShowPlayerOrder() {
                 HorizontalPlayerOrderActiveView()
             }
-            Text(appData.GetCurrentPhase().getDescription())
+            Text(appData.GetCurrentPhase().description)
             switch appData.GetCurrentPhase().phaseId {
             case "game_setup":
                 SetPlayerOrderView(helperText: "Choose First Player and set the player order ")
             case "mythos_phase":
-                switch appData.GetCurrentPhase().getPhaseActions()[appData.currentAction].getActionRef() {
+                switch appData.GetCurrentPhase().phaseActions[appData.currentAction].actionRef {
                     case "open_gate_elder_sign", "open_gate_gate_exists", "open_gate_no_gate":
                         SimpleActionView()
                     default:
@@ -78,40 +80,20 @@ struct AH2EPhaseView: View {
         }
         .onChange(of: appData.goToNextPlayer) {
             if appData.goToNextPlayer == true {
-                print("Current Player: \(appData.GetCurrentPlayer().profileId)")
                 appData.goToNextPlayer = false
-                if (appData.GetCurrentPhase().phaseId == "movement_phase" || appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_one" || appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_two") && IsLastPlayer() {
-                    appData.currentPlayer = 0
-                    appData.GoToPhaseAction(phaseId: "arkham_encounters_phase")
-                }
-                else if appData.GetCurrentPhase().phaseId == "arkham_encounters_phase" && IsLastPlayer() {
-                    appData.currentPlayer = 0
-                    appData.GoToPhaseAction(phaseId: "other_world_encounters_phase")
-                }
-                else if appData.GetCurrentPhase().phaseId == "other_world_encounters_phase" && IsLastPlayer() {
-                    appData.currentPlayer = 0
-                    appData.GoToPhaseAction(phaseId: "mythos_phase")
-                }
-                else if appData.GetCurrentPhase().phaseId == "monster_battle_phase" {
+                if appData.GetCurrentPhase().phaseId == "monster_battle_phase" {
                     ReturnToFlow()
                 } else if appData.GetCurrentPhase().phaseId == "movement_phase" {
                     MovementHandler(profileId: GetNextProfileId())
-                    if appData.GetCurrentPhase().phaseId == "movement_phase" {
-                        appData.GoToNextScreen()
-                    }
-                } else {
-                    appData.GoToNextScreen()
                 }
+                appData.GoToNextScreen()
             }
         }
-        .onChange(of: appData.currentPhase) {
-            if appData.GetCurrentPhase().phaseId == "movement_phase" {
-                MovementHandler(profileId: appData.GetCurrentPlayer().profileId)
-            }
-            if appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_one" || appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_two" {
-                print("In Lost In Time And Space Phase One")
-            }
-        }
+//        .onChange(of: appData.currentPhase) {
+//            if appData.GetCurrentPhase().phaseId == "movement_phase" {
+//                MovementHandler(profileId: appData.GetCurrentPlayer().profileId)
+//            }
+//        }
         .onChange(of: appData.customActionButtonListener) {
             CustomActionButtonListeners()
         }
@@ -124,6 +106,7 @@ struct AH2EPhaseView: View {
         }
     }
     
+    
     func CustomActionButtonListeners() {
         if appData.customActionButtonListener == "location_has_elder_sign" {
             appData.GoToPhaseAction(actionId: "open_gate_elder_sign")
@@ -132,57 +115,56 @@ struct AH2EPhaseView: View {
         } else if appData.customActionButtonListener == "location_has_no_gate" {
             appData.GoToPhaseAction(actionId: "open_gate_no_gate")
         } else if appData.customActionButtonListener == "battle_monster" {
-            if currentPhase == -1 {
-                currentPhase = appData.currentPhase
+            if recallPhase == nil {
+                recallPhase = appData.currentPhase
             }
             appData.GoToPhaseAction(phaseId: "monster_battle_phase")
         } else if appData.customActionButtonListener == "lost_in_time_and_space" {
-            print("Lost in time and space")
             playersLostInTimeAndSpacePhaseOne.append(appData.GetCurrentPlayer().profileId)
             ReturnToFlow()
+            appData.GoToNextScreen()
         }
         appData.customActionButtonListener = ""
     }
+    
+    
+    func ReturnToFlow() {
+        print ("recallPhase: \(self.recallPhase!)")
+        appData.currentPhase = self.recallPhase ?? 0
+        self.recallPhase = nil
+        appData.currentAction = 0
+    }
+    
+    func MovementHandler(profileId: String) {
+        if CheckPlayerContainedIn(checkArray: playersLostInTimeAndSpacePhaseOne, character: profileId) {
+            playersLostInTimeAndSpacePhaseOne.removeAll(where: { value in
+                value == profileId
+            })
+            playersLostInTimeAndSpacePhaseTwo.append(profileId)
+            print("CurrentPlayer: \(profileId) Going To Lost In Time and Space Phase One")
+            appData.nextScreenOverride = "lost_in_time_and_space_phase_one"
+            // appData.GoToPhaseAction(phaseId: "lost_in_time_and_space_phase_one")
+        } else if CheckPlayerContainedIn(checkArray: playersLostInTimeAndSpacePhaseTwo, character: profileId) {
+            playersLostInTimeAndSpacePhaseTwo.removeAll(where: { value in
+                value == profileId
+            })
+            print("Going To: Lost In Time and Space Phase Two")
+            //appData.GoToPhaseAction(phaseId: "lost_in_time_and_space_phase_two")
+            appData.nextScreenOverride = "lost_in_time_and_space_phase_two"
+        }
+    }
+    
     
     func RotateFirstPlayer() {
         appData.selectedPlayers.append(appData.selectedPlayers.removeFirst())
         appData.currentPlayer = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: appData.selectedPlayers.count - 1, selectedPlayers: appData.selectedPlayers)
     }
     
-    func IsLastPlayer() -> Bool {
-        return appData.currentPlayer == appData.selectedPlayers.count - 1
-    }
     
-    func ShowPlayerOrder() -> Bool {
-        return appData.GetCurrentPhase().phaseId == "movement_phase"
-            || appData.GetCurrentPhase().phaseId == "arkham_encounters_phase"
-            || appData.GetCurrentPhase().phaseId == "other_world_encounters_phase"
+    func GetNextProfileId() -> String {
+        let nextLivePlayerIndex = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: appData.currentPlayer, selectedPlayers: appData.selectedPlayers)
+        return appData.selectedPlayers[nextLivePlayerIndex].profileId
     }
-    
-    func ReturnToFlow() {
-        appData.currentPhase = self.currentPhase
-        appData.currentAction = 0
-        self.currentPhase = -1
-        appData.GoToNextScreen()
-    }
-    
-    func MovementHandler(profileId: String) {
-        if CheckPlayerContainedIn(checkArray: playersLostInTimeAndSpacePhaseOne, character: profileId) {
-            playersLostInTimeAndSpacePhaseOne.removeAll(where: { value in
-                value == appData.GetCurrentPlayer().profileId
-            })
-            playersLostInTimeAndSpacePhaseTwo.append(appData.GetCurrentPlayer().profileId)
-            print("Going To: Lost In Time and Space Phase One")
-            appData.GoToPhaseAction(phaseId: "lost_in_time_and_space_phase_one")
-        } else if CheckPlayerContainedIn(checkArray: playersLostInTimeAndSpacePhaseTwo, character: profileId) {
-            playersLostInTimeAndSpacePhaseTwo.removeAll(where: { value in
-                value == appData.GetCurrentPlayer().profileId
-            })
-            print("Going To: Lost In Time and Space Phase Two")
-            appData.GoToPhaseAction(phaseId: "lost_in_time_and_space_phase_two")
-        }
-    }
-    
     
     
     func CheckPlayerContainedIn(checkArray: [String], character: String) -> Bool {
@@ -192,11 +174,21 @@ struct AH2EPhaseView: View {
         })
         return arrayContains
     }
+
     
-    func GetNextProfileId() -> String {
-        let nextLivePlayerIndex = PlayerHelperMethods.getNextLivePlayer(currentPlayerIndex: appData.currentPlayer, selectedPlayers: appData.selectedPlayers)
-        return appData.selectedPlayers[nextLivePlayerIndex].profileId
+    func ShowPlayerOrder() -> Bool {
+        return appData.GetCurrentPhase().phaseId == "movement_phase"
+            || appData.GetCurrentPhase().phaseId == "arkham_encounters_phase"
+            || appData.GetCurrentPhase().phaseId == "other_world_encounters_phase"
+            || appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_one"
+            || appData.GetCurrentPhase().phaseId == "lost_in_time_and_space_phase_two"
     }
+    
+    
+    func IsLastPlayer() -> Bool {
+        return appData.currentPlayer == appData.selectedPlayers.count - 1
+    }
+    
 }
 
 #Preview (traits: .modifier(AH2EPlayerPreviewTrait())){

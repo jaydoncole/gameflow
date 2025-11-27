@@ -15,12 +15,12 @@ struct PhaseTypeSelectableActionView: View {
 
     var body: some View {
         VStack() {
-            ForEach(appData.GetCurrentPhase().getPhaseActions()) { action in
+            ForEach(appData.GetCurrentPhase().phaseActions) { action in
                 HStack {
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: action.getActionIcon()).foregroundStyle(appData.GetCurrentPlayer().iconColor)
-                            Text(action.getName()).font(.headline)
+                            Image(systemName: action.actionIcon).foregroundStyle(appData.GetCurrentPlayer().iconColor)
+                            Text(action.name).font(.headline)
                             Spacer()
                             Button(action: {
                                 actionsTaken.append(action)
@@ -28,7 +28,7 @@ struct PhaseTypeSelectableActionView: View {
                                 Image(systemName: "square.and.arrow.down.badge.checkmark")
                             }).foregroundStyle(appData.GetCurrentPlayer().iconColor)
                         }
-                        BasicActionDisplayView(actionRef: action.getActionRef())
+                        BasicActionDisplayView(actionRef: action.actionRef)
                     }
                 }.padding()
             }.frame(width: 350)
@@ -41,7 +41,7 @@ struct PhaseTypeSelectableActionView: View {
                             actionsTaken.remove(at: index)
                         }
                     }, label: {
-                        Image(systemName: actionsTaken.indices.contains(index) ? actionsTaken[index].getActionIcon() : "square")
+                        Image(systemName: actionsTaken.indices.contains(index) ? actionsTaken[index].actionIcon : "square")
                             .foregroundStyle(appData.GetCurrentPlayer().iconColor)
                     })
                 }

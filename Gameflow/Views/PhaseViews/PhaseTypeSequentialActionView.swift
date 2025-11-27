@@ -13,7 +13,7 @@ struct PhaseTypeSequentialActionView: View {
     
     var body: some View {
         VStack() {
-            Text(appData.GetCurrentAction().getName())
+            Text(appData.GetCurrentAction().name)
                 .font(.headline)
             BasicActionDisplayView()
         }

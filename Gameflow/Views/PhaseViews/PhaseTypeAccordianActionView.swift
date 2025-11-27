@@ -16,15 +16,15 @@ struct PhaseTypeAccordianActionView: View {
     
     var body: some View {
         VStack() {
-            ForEach(appData.GetCurrentPhase().getPhaseActions()) { action in
-                DisclosureGroup(action.getName()) {
-                    BasicActionDisplayView(actionRef: action.getActionRef())
+            ForEach(appData.GetCurrentPhase().phaseActions) { action in
+                DisclosureGroup(action.name) {
+                    BasicActionDisplayView(actionRef: action.actionRef)
                 }
             }
         }
         .onAppear() {
-            for action in appData.GetCurrentPhase().getPhaseActions() {
-                toggles[action.getActionRef()] = false
+            for action in appData.GetCurrentPhase().phaseActions {
+                toggles[action.actionRef] = false
             }
         }
     }

@@ -70,13 +70,13 @@ struct BasicActionDisplayView: View {
     private func RefreshActionElements() {
         var allActionElements: [BasicActionElement] = []
         if  actionRef != "" {
-            for phaseAction in appData.GetCurrentPhase().getPhaseActions() {
-                if phaseAction.getActionRef() == actionRef {
-                    allActionElements = phaseAction.getBasicActionElements()
+            for phaseAction in appData.GetCurrentPhase().phaseActions {
+                if phaseAction.actionRef == actionRef {
+                    allActionElements = phaseAction.basicActionElements
                 }
             }
         } else {
-            allActionElements = appData.GetCurrentAction().getBasicActionElements()
+            allActionElements = appData.GetCurrentAction().basicActionElements
         }
         
         if groupName != "" {

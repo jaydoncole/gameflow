@@ -85,7 +85,7 @@ import SwiftUI
     }
     
     public func GetCurrentAction() -> GamePhaseAction {
-        return currentGame.gamePhases[currentPhase].getPhaseAction(index: currentAction)
+        return currentGame.gamePhases[currentPhase].phaseActions[currentAction]
     }
     
     public func GoToPhaseAction(phaseId: String, actionId: String) {
@@ -93,8 +93,8 @@ import SwiftUI
         var actionCounter = 0
         outerLoop: for gamePhase in currentGame.gamePhases {
             if(gamePhase.phaseId == phaseId) {
-                for phaseAction in gamePhase.getPhaseActions() {
-                    if(phaseAction.getActionRef() == actionId) {
+                for phaseAction in gamePhase.phaseActions {
+                    if(phaseAction.actionRef == actionId) {
                         currentPhase = phaseCounter
                         currentAction = actionCounter
                         print("currentPhase: \(currentPhase), currentAction: \(currentAction)")
@@ -121,8 +121,8 @@ import SwiftUI
     
     public func GoToPhaseAction(actionId: String) {
         var actionCounter = 0
-        for phaseAction in GetCurrentPhase().getPhaseActions() {
-            if(phaseAction.getActionRef() == actionId) {
+        for phaseAction in GetCurrentPhase().phaseActions {
+            if(phaseAction.actionRef == actionId) {
                 currentAction = actionCounter
                 break;
             }
@@ -136,15 +136,19 @@ import SwiftUI
             nextScreenId = nextScreenOverride
             nextScreenOverride = ""
         } else {
-            nextScreenId = GetCurrentAction().getNextScreenId()
+            nextScreenId = GetCurrentAction().nextScreenId
         }
-        switch GetCurrentAction().getNextScreenType() {
+        switch GetCurrentAction().nextScreenType {
             case .NextAction:
                 GoToPhaseAction(actionId: nextScreenId)
             case .NextPhase:
                 GoToPhaseAction(phaseId: nextScreenId)
             case .NextPlayer:
-                GoToPhaseAction(phaseId: nextScreenId)
+                if GetCurrentAction().lastPlayerNextScreenId.count > 0 && currentPlayer == selectedPlayers.count - 1  {
+                    GoToPhaseAction(phaseId: GetCurrentAction().lastPlayerNextScreenId)
+                } else {
+                    GoToPhaseAction(phaseId: nextScreenId)
+                }
                 SetNextPlayer()
             default:
                 print ("Invalid Screen Type")

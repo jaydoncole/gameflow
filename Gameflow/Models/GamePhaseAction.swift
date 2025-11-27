@@ -8,70 +8,45 @@ import Foundation
 
 class GamePhaseAction: Identifiable {
     public let id = UUID()
-    private var actionRef: String
-    private var name: String
-    private var basicActionElements: [BasicActionElement]
-    private var actionIcon: String = ""
-    private var nextScreenType: NextScreenTypes = .NextAction
-    private var nextScreenId: String = ""
-    private var displayInScrollView: Bool = false
+    var actionRef: String
+    var name: String
+    var basicActionElements: [BasicActionElement]
+    var actionIcon: String = ""
+    var nextScreenType: NextScreenTypes = .NextAction
+    var nextScreenId: String = ""
+    var lastPlayerNextScreenId: String = "" // If we've reached the last player, defines the next phase we go to
+    var displayInScrollView: Bool = false
     
     
-    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, displayInScrollView: Bool = false) {
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String) {
         self.actionRef = actionRef
         self.name = name
         self.basicActionElements = basicActionElements
         self.nextScreenType = nextScreenType
         self.nextScreenId = nextScreenId
+    }
+    
+    init (actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, lastPlayerNextScreenId: String = "", actionIcon: String = "", displayInScrollView: Bool = false)
+    {
+        self.actionRef = actionRef
+        self.name = name
+        self.basicActionElements = basicActionElements
+        self.nextScreenType = nextScreenType
+        self.nextScreenId = nextScreenId
+        self.lastPlayerNextScreenId = lastPlayerNextScreenId
+        self.actionIcon = actionIcon
         self.displayInScrollView = displayInScrollView
+
     }
     
-    
-    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, actionIcon: String, displayInScrollView: Bool = false) {
+    init(actionRef: String, name: String, basicActionElements: [BasicActionElement], nextScreenType: NextScreenTypes, nextScreenId: String, actionIcon: String = "", displayInScrollView: Bool = false) {
         self.actionRef = actionRef
         self.name = name
         self.basicActionElements = basicActionElements
         self.nextScreenType = nextScreenType
         self.nextScreenId = nextScreenId
         self.actionIcon = actionIcon
-        self.displayInScrollView = false
-    }
-    
-    public func setActionIcon(actionIcon: String) {
-        self.actionIcon = actionIcon
-    }
-    
-    public func getName() -> String {
-        return self.name
-    }
-    
-    public func getActionIcon() -> String {
-        return self.actionIcon
-    }
-    
-    public func getActionRef() -> String {
-        return self.actionRef
-    }
-    
-    public func getBasicActionElements() -> [BasicActionElement] {
-        return self.basicActionElements
-    }
-    
-    public func getNextScreenType() -> NextScreenTypes {
-        return nextScreenType
-    }
-    
-    
-    public func setNextScreenId(screenId: String) {
-        self.nextScreenId = screenId
-    }
-    
-    public func getNextScreenId() -> String {
-        return nextScreenId
-    }
-    
-    public func getDisplayInScrollView() -> Bool {
-        return displayInScrollView
+        self.displayInScrollView = displayInScrollView
     }
 }
 

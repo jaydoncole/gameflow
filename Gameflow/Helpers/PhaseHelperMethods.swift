@@ -30,8 +30,8 @@ class PhaseHelperMethods {
     
     public static func mapActionRefToIndex(phase: GamePhase, actionRef: String) -> Int {
         var index = 0
-        for gamePhaseAction in phase.getPhaseActions() {
-            if gamePhaseAction.getActionRef() == actionRef {
+        for gamePhaseAction in phase.phaseActions {
+            if gamePhaseAction.actionRef == actionRef {
                 return index
             }
             index += 1
@@ -41,9 +41,9 @@ class PhaseHelperMethods {
     
     
     public static func mapIndexToActionRef(phase: GamePhase, index: Int) -> String {
-        let phaseActions = phase.getPhaseActions()
+        let phaseActions = phase.phaseActions
         if phaseActions.indices.contains(index) {
-            return phaseActions[index].getActionRef()
+            return phaseActions[index].actionRef
         }
         return "Action Not Found"
     }

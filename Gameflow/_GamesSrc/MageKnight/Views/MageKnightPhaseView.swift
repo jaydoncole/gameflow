@@ -21,7 +21,7 @@ struct MageKnightPhaseView: View {
     
     var body: some View {
         VStack {
-            Text(appData.GetCurrentPhase().getDescription())
+            Text(appData.GetCurrentPhase().description)
             switch appData.GetCurrentPhase().phaseId {
                 case "game_setup":
                 // Game setup methods moved to MageKnightGameSetupView

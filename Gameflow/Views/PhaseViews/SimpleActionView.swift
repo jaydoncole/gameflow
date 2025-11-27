@@ -11,7 +11,7 @@ struct SimpleActionView: View {
     @Environment(AppData.self) private var appData: AppData
     
     var body: some View {
-        if appData.GetCurrentAction().getDisplayInScrollView() {
+        if appData.GetCurrentAction().displayInScrollView {
             ScrollView {
                 VStack {
                     BasicActionDisplayView()
